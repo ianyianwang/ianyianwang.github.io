@@ -241,3 +241,23 @@ footer .small { font-size: .82rem; }
   .portrait { max-width: 260px; }
   .two-col { grid-template-columns: 1fr; gap: 0; }
 }
+.faves {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.faves div {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.faves dt {
+  color: var(--accent);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.faves dd { margin: 2px 0 0; font-weight: 500; }
