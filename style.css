@@ -278,3 +278,13 @@ footer .small { font-size: .82rem; }
 .strip.posters { grid-template-columns: repeat(2, 1fr); }
 .strip.posters img { aspect-ratio: auto; object-fit: contain; }
 .about-block > .strip { max-width: 720px; margin-top: 18px; }
+
+/* Mini bar chart in a post's top panel */
+.post .icon.chart { display: block; font-size: 1rem; padding: 18px 18px 14px; }
+.chart .bars { display: flex; align-items: flex-end; gap: 12px; height: 150px; }
+.chart .bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; text-align: center; }
+.chart .bar b { font-family: "Inter", sans-serif; font-size: .8rem; color: var(--ink); margin-bottom: 4px; }
+.chart .bar i { display: block; background: var(--accent); border-radius: 6px 6px 0 0; opacity: .55; }
+.chart .bar.now i { opacity: 1; }
+.chart .bar span { white-space: nowrap; font-family: "Inter", sans-serif; font-size: .75rem; color: var(--muted); margin-top: 4px; }
+.chart small { margin-top: 8px; }
