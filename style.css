@@ -128,10 +128,10 @@ h1 {
 .post .icon {
   display: grid;
   place-items: center;
-  aspect-ratio: 4 / 3;
+  padding: 22px 16px 18px;
   background: var(--accent-soft);
   font-family: "Fraunces", Georgia, serif;
-  font-size: 3.4rem;
+  font-size: 2.4rem;
   color: var(--accent);
   text-align: center;
   line-height: 1.2;
