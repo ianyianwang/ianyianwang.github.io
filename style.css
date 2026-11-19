@@ -57,7 +57,7 @@ a { color: var(--accent); }
   letter-spacing: .01em;
 }
 .brand span { color: var(--accent); }
-nav { display: flex; gap: 6px; }
+nav { display: flex; flex-wrap: wrap; gap: 6px; }
 nav a {
   color: #d9deea;
   text-decoration: none;
