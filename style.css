@@ -277,8 +277,7 @@ footer .small { font-size: .82rem; }
 .strip span { display: block; margin-top: 4px; font-size: .75rem; line-height: 1.3; }
 .strip.posters { grid-template-columns: repeat(2, 1fr); }
 .strip.posters img { aspect-ratio: auto; object-fit: contain; }
-.strip.pairs { grid-template-columns: repeat(2, 1fr); }
-.strip.pairs img { aspect-ratio: 4 / 3; }
+.strip.years img { aspect-ratio: 4 / 3; }
 .about-block > .strip { max-width: 720px; margin-top: 18px; }
 
 /* Mini bar chart in a post's top panel */
