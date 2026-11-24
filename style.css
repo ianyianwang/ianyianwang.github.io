@@ -289,3 +289,8 @@ footer .small { font-size: .82rem; }
 .chart .bar.now i { opacity: 1; }
 .chart .bar span { white-space: nowrap; font-family: "Inter", sans-serif; font-size: .75rem; color: var(--muted); margin-top: 4px; }
 .chart small { margin-top: 8px; }
+
+/* Video clip inside a post */
+.clip { margin-top: 14px; }
+.clip video { display: block; width: 100%; max-width: 640px; border-radius: 10px; background: #000; }
+.clip span { display: block; margin-top: 4px; font-size: .75rem; line-height: 1.3; color: var(--muted); }
