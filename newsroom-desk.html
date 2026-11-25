@@ -11,40 +11,51 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2">
   <style>
-    :root { --set: #3b6fd8; --due: #e8792b; --event: #8a8f9c; --today: #fdeede; }
-    @media (prefers-color-scheme: dark) { :root { --set: #7da2f0; --event: #8f95a6; --today: #3a2a1d; } }
+    :root { --due: #e8792b; --event: #6b7180; --event-soft: #eceae5; --today: #fdeede; --late: #c2410c; }
+    @media (prefers-color-scheme: dark) { :root { --event: #a3a9b8; --event-soft: #2c3245; --today: #3a2a1d; --late: #f59e5b; } }
+
     .desk-tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 6px 0 22px; }
     .desk-tools input {
       font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px;
-      background: var(--card); color: var(--ink); min-width: 220px; flex: 1 1 220px; max-width: 340px;
+      background: var(--card); color: var(--ink); flex: 1 1 220px; max-width: 340px; min-width: 0;
     }
-    .key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .85rem; color: var(--muted); }
-    .key span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
-    .key .k-set::before { background: var(--set); }
-    .key .k-due::before { background: var(--due); }
-    .key .k-event::before { background: var(--event); }
+    h2.sec { font-family: "Fraunces", Georgia, serif; font-size: 1.35rem; margin: 0 0 12px; }
 
-    .months { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 18px; margin-bottom: 30px; }
-    .month { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 14px; }
-    .month h2 { font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; margin: 2px 4px 10px; }
-    .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
-    .dow { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: center; padding-bottom: 2px; }
-    .month, .grid > * { min-width: 0; }
-    .day { min-height: 64px; border-radius: 8px; padding: 4px; border: 1px solid transparent; font-size: .72rem; overflow: hidden; }
-    .day.blank { visibility: hidden; }
-    .day.weekend { opacity: .55; }
+    /* Coming up */
+    .upcoming { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 6px 18px; margin-bottom: 30px; }
+    .up { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+    .up:first-child { border-top: 0; }
+    .up .when { font-weight: 600; color: var(--due); }
+    .up .when small { display: block; font-weight: 500; font-size: .78rem; color: var(--muted); }
+    .up .what strong { color: var(--ink); }
+    .up .what span { color: var(--muted); }
+    .up.yours .when { color: var(--late); }
+    .tag { display: inline-block; font-size: .72rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--due); color: #fff; margin-left: 6px; vertical-align: 1px; }
+    .none { color: var(--muted); padding: 12px 0; margin: 0; }
+
+    /* Calendar */
+    .months { display: grid; gap: 18px; margin-bottom: 30px; }
+    .month { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 16px; min-width: 0; }
+    .month h3 { font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; margin: 2px 4px 10px; }
+    .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, .55fr)); gap: 4px; }
+    .grid > * { min-width: 0; }
+    .dow { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 6px 2px; }
+    .day { min-height: 70px; border-radius: 8px; padding: 5px 6px; border: 1px solid var(--line); font-size: .78rem; line-height: 1.35; }
+    .day.blank { border: 0; }
+    .day.weekend { background: transparent; border-style: dashed; }
     .day.today { background: var(--today); border-color: var(--due); }
-    .day .n { font-weight: 600; font-size: .8rem; color: var(--ink); }
-    .chip { display: block; margin-top: 2px; padding: 1px 5px; border-radius: 5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.45; }
-    .chip.set { background: var(--set); }
-    .chip.due { background: var(--due); }
-    .chip.event { background: var(--event); }
-    .day.dim .chip { opacity: .18; }
+    .day .n { font-weight: 600; font-size: .8rem; color: var(--muted); }
+    .day.today .n { color: var(--due); }
+    .ev { display: block; margin-top: 3px; padding: 2px 6px; border-radius: 5px; background: var(--event-soft); color: var(--event); font-weight: 500; }
+    .dd { display: block; margin-top: 3px; padding: 2px 6px; border-radius: 5px; background: var(--due); color: #fff; }
+    .dd b { font-weight: 600; }
+    .dd.past { opacity: .45; }
 
+    /* Cards */
     .stories { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr)); gap: 16px; }
     .story { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 16px 18px; }
     .story .who { font-family: "Fraunces", Georgia, serif; font-size: 1.2rem; margin: 0; }
-    .story .yr { font-size: .8rem; color: var(--muted); }
+    .story .yr { font-size: .8rem; color: var(--muted); font-family: "Inter", sans-serif; }
     .story .what { margin: 6px 0 10px; font-weight: 500; }
     .story dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0 0 12px; font-size: .9rem; }
     .story dt { color: var(--muted); }
@@ -55,14 +66,15 @@
     .status.done { background: #2f8f5b; color: #fff; }
     .btn { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--navy); color: #fff; text-decoration: none; font-weight: 600; font-size: .9rem; }
     .btn.off { background: var(--line); color: var(--muted); }
-    .hidden { display: none; }
     .rules { margin-top: 28px; color: var(--muted); font-size: .9rem; }
-    @media (max-width: 520px) {
+
+    @media (max-width: 640px) {
       .month { padding: 10px 6px; }
-      .grid { gap: 2px; }
-      .dow { font-size: .6rem; letter-spacing: 0; }
-      .day { min-height: 44px; padding: 3px 2px; text-align: center; }
-      .chip { display: inline-block; width: 9px; height: 9px; padding: 0; margin: 2px 1px 0; border-radius: 50%; font-size: 0; }
+      .grid { gap: 2px; grid-template-columns: repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, .5fr)); }
+      .dow { font-size: .6rem; letter-spacing: 0; padding: 0 2px; }
+      .day { min-height: 48px; padding: 3px; font-size: .62rem; line-height: 1.25; }
+      .ev, .dd { padding: 1px 3px; overflow-wrap: anywhere; }
+      .up { grid-template-columns: 1fr; gap: 2px; }
     }
   </style>
 </head>
@@ -90,11 +102,15 @@
 
   <div class="desk-tools">
     <input id="find" type="search" placeholder="Type your nickname…" aria-label="Find your nickname">
-    <div class="key"><span class="k-set">Story set</span><span class="k-event">Event day</span><span class="k-due">Due</span></div>
   </div>
 
+  <h2 class="sec">Coming up</h2>
+  <section class="upcoming" id="upcoming"></section>
+
+  <h2 class="sec">Calendar</h2>
   <section class="months" id="months"></section>
 
+  <h2 class="sec">Your stories</h2>
   <section class="stories" id="stories"></section>
 
   <p class="rules"><strong>Remember:</strong> Primary 50–100 words, Secondary 100–200. Your own words only: no AI. When the status says <strong>Your turn</strong>, the next step is yours. Stuck? Email Mr. Wang.</p>
@@ -108,23 +124,24 @@
 
 <script>
 /* ===== UPDATE HERE =====
-   One line per story. Dates are YYYY-MM-DD (leave "" if not set).
-   status: "writing" | "yours" (student's turn) | "checking" (Mr Wang's turn) | "published"
-   doc: the Google Doc link ("" = not ready yet). */
+   One line per story. Dates are YYYY-MM-DD ("" if not set).
+   topic: short name used on the calendar and list (stories with the same topic + due date are grouped).
+   event: the event's name on its day.  status: "writing" | "yours" | "checking" | "published"
+   doc: Google Doc link ("" = not ready yet). */
 const STORIES = [
-  { who:"Thee",    yr:"Year 9", story:"U-15 basketball vs Anglo (opinion)", set:"2026-11-20", event:"2026-11-20", due:"2026-11-26", status:"yours",    doc:"https://docs.google.com/document/d/1N_N09IEikDha_EPBFu9CpjdSyaaOvmp5/edit" },
-  { who:"Mascot",  yr:"Year 9", story:"U-15 basketball vs Anglo",           set:"2026-11-20", event:"2026-11-20", due:"2026-11-23", status:"checking", doc:"https://docs.google.com/document/d/1PRswcN1ZH7rTCS5snnLUTIa17qvRBsN6/edit" },
-  { who:"Mascot",  yr:"Year 9", story:"U-15 BISAL South Conference tournament", set:"2026-11-24", event:"2026-11-28", due:"2026-11-30", status:"writing", doc:"" },
-  { who:"S",       yr:"Year 9", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/16QCf6ZuXwLniX9avibGuVO23hGf2Dr1n/edit" },
-  { who:"Ivy",     yr:"Year 9", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1KVKWAjY1dQ92k2_BFRGZhiLc0dPqcAia/edit" },
-  { who:"Proud",   yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1PbXgmcvig5kDRFfSUgv905gOfMfw0-s7/edit" },
-  { who:"Nam-Oon", yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1nVQxeeDexVKR1SLBSjqzQ4-QXWsruBQq/edit" },
-  { who:"Paula",   yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1iyhKAqupfXr68xD5cRAaN1aV441eRrJC/edit" },
-  { who:"Oscar",   yr:"Year 5", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/13ghzjR42HLL3XSpUmfEBMPfDSOBpFcil/edit" },
-  { who:"Pordee",  yr:"Year 6", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"published", doc:"primary-newsroom.html" },
-  { who:"Din",     yr:"Year 9", story:"Christmas show",                     set:"2026-11-20", event:"2026-12-09", due:"2026-12-11", status:"writing",  doc:"" },
-  { who:"O.B",     yr:"Year 9", story:"Christmas show",                     set:"2026-11-20", event:"2026-12-09", due:"2026-12-11", status:"writing",  doc:"" },
-  { who:"Kaleb",   yr:"Year 6", story:"U-11 / U-13 basketball: season opener (opinion)", set:"2026-11-24", event:"", due:"", dueText:"Before the first game (January)", status:"writing", doc:"" },
+  { who:"Thee",    yr:"Year 9", topic:"Basketball opinion",  story:"U-15 basketball vs Anglo (opinion)", event:"U-15 vs Anglo", eventDate:"2026-11-20", set:"2026-11-20", due:"2026-11-26", status:"yours",    doc:"https://docs.google.com/document/d/1N_N09IEikDha_EPBFu9CpjdSyaaOvmp5/edit" },
+  { who:"Mascot",  yr:"Year 9", topic:"Basketball vs Anglo", story:"U-15 basketball vs Anglo",           event:"U-15 vs Anglo", eventDate:"2026-11-20", set:"2026-11-20", due:"2026-11-23", status:"checking", doc:"https://docs.google.com/document/d/1PRswcN1ZH7rTCS5snnLUTIa17qvRBsN6/edit" },
+  { who:"Mascot",  yr:"Year 9", topic:"BISAL tournament",    story:"U-15 BISAL South Conference tournament", event:"BISAL tournament", eventDate:"2026-11-28", set:"2026-11-24", due:"2026-11-30", status:"writing", doc:"" },
+  { who:"S",       yr:"Year 9", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/16QCf6ZuXwLniX9avibGuVO23hGf2Dr1n/edit" },
+  { who:"Ivy",     yr:"Year 9", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/1KVKWAjY1dQ92k2_BFRGZhiLc0dPqcAia/edit" },
+  { who:"Proud",   yr:"Year 8", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/1PbXgmcvig5kDRFfSUgv905gOfMfw0-s7/edit" },
+  { who:"Nam-Oon", yr:"Year 8", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/1nVQxeeDexVKR1SLBSjqzQ4-QXWsruBQq/edit" },
+  { who:"Paula",   yr:"Year 8", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/1iyhKAqupfXr68xD5cRAaN1aV441eRrJC/edit" },
+  { who:"Oscar",   yr:"Year 5", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"writing", doc:"https://docs.google.com/document/d/13ghzjR42HLL3XSpUmfEBMPfDSOBpFcil/edit" },
+  { who:"Pordee",  yr:"Year 6", topic:"Loy Krathong", story:"Loy Krathong celebration", event:"Loy Krathong", eventDate:"2026-11-24", set:"2026-11-20", due:"2026-11-27", status:"published", doc:"primary-newsroom.html" },
+  { who:"Din",     yr:"Year 9", topic:"Christmas show", story:"Christmas show", event:"Christmas show", eventDate:"2026-12-09", set:"2026-11-20", due:"2026-12-11", status:"writing", doc:"" },
+  { who:"O.B",     yr:"Year 9", topic:"Christmas show", story:"Christmas show", event:"Christmas show", eventDate:"2026-12-09", set:"2026-11-20", due:"2026-12-11", status:"writing", doc:"" },
+  { who:"Kaleb",   yr:"Year 6", topic:"Basketball season opener", story:"U-11 / U-13 basketball: season opener (opinion)", event:"", eventDate:"", set:"2026-11-24", due:"", dueText:"Before the first game (January)", status:"writing", doc:"" },
 ];
 const MONTHS = [[2026,10],[2026,11]]; // November, December (month index starts at 0)
 /* ======================= */
@@ -134,29 +151,61 @@ const pad = n => String(n).padStart(2,"0");
 const key = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const nice = s => s ? new Date(s+"T00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}) : "";
 const today = key(new Date());
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const open = s => s.status !== "published";
 
-function renderMonths(filter){
+// group stories due on one day by topic: [{topic, names[], yours}]
+function dueGroups(list, day){
+  const g = new Map();
+  for (const s of list.filter(s => s.due === day && open(s))){
+    if (!g.has(s.topic)) g.set(s.topic, { topic:s.topic, names:[], yours:false });
+    const x = g.get(s.topic); x.names.push(s.who); x.yours ||= s.status === "yours";
+  }
+  return [...g.values()];
+}
+
+function renderUpcoming(list){
+  const box = document.getElementById("upcoming"); box.textContent = "";
+  const days = [...new Set(list.filter(s => open(s) && s.status !== "checking" && (s.due >= today || s.status === "yours")).map(s => s.due).filter(Boolean))].sort();
+  const later = list.filter(s => open(s) && !s.due && s.dueText);
+  if (!days.length && !later.length){ box.appendChild(el("p","none","Nothing due right now.")); return; }
+  for (const d of days){
+    for (const grp of dueGroups(list.filter(s => s.status !== "checking"), d)){
+      const row = el("div","up"+(grp.yours?" yours":""));
+      const w = el("div","when", nice(d));
+      const diff = Math.round((new Date(d+"T00:00") - new Date(today+"T00:00"))/864e5);
+      w.appendChild(el("small", null, diff===0 ? "today" : diff===1 ? "tomorrow" : diff<0 ? "overdue" : "in "+diff+" days"));
+      const what = el("div","what"); what.appendChild(el("strong", null, grp.topic+": "));
+      what.appendChild(el("span", null, grp.names.join(", ")));
+      if (grp.yours) what.appendChild(el("span","tag","Your turn"));
+      row.append(w, what); box.appendChild(row);
+    }
+  }
+  for (const s of later){
+    const row = el("div","up"); row.append(el("div","when", "Later"));
+    const what = el("div","what"); what.appendChild(el("strong", null, s.topic+": ")); what.appendChild(el("span", null, s.who+", due "+s.dueText.charAt(0).toLowerCase()+s.dueText.slice(1)));
+    row.appendChild(what); box.appendChild(row);
+  }
+}
+
+function renderMonths(list){
   const box = document.getElementById("months"); box.textContent = "";
   for (const [y,m] of MONTHS){
-    const card = document.createElement("div"); card.className = "month";
-    const h = document.createElement("h2");
-    h.textContent = new Date(y,m,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"}); card.appendChild(h);
-    const g = document.createElement("div"); g.className = "grid";
-    for (const d of ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]){ const e=document.createElement("div"); e.className="dow"; e.textContent=d; g.appendChild(e); }
+    const card = el("div","month");
+    card.appendChild(el("h3", null, new Date(y,m,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"})));
+    const g = el("div","grid");
+    for (const d of ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]) g.appendChild(el("div","dow",d));
     const first = (new Date(y,m,1).getDay()+6)%7, days = new Date(y,m+1,0).getDate();
-    for (let i=0;i<first;i++){ const e=document.createElement("div"); e.className="day blank"; g.appendChild(e); }
+    for (let i=0;i<first;i++) g.appendChild(el("div","day blank"));
     for (let d=1; d<=days; d++){
-      const dt = new Date(y,m,d), k = key(dt), cell = document.createElement("div");
-      cell.className = "day" + (dt.getDay()%6===0 ? " weekend":"") + (k===today ? " today":"");
-      const n = document.createElement("div"); n.className="n"; n.textContent=d; cell.appendChild(n);
-      for (const t of ["event","set","due"]){
-        const names = [...new Set(STORIES.filter(s => s[t]===k && !(t==="event" && s.event===s.set))
-          .filter(s => !filter || s.who.toLowerCase().includes(filter)).map(s => s.who))];
-        if (!names.length) continue;
-        const word = {set:"set",event:"event",due:"due"}[t];
-        const c = document.createElement("span"); c.className = "chip "+t;
-        c.textContent = names.length===1 ? names[0] : names.length+" "+word;
-        c.title = ({set:"Story set",event:"Event day",due:"Due"})[t]+": "+names.join(", ");
+      const dt = new Date(y,m,d), k = key(dt);
+      const cell = el("div","day"+(dt.getDay()%6===0?" weekend":"")+(k===today?" today":""));
+      cell.appendChild(el("div","n",d));
+      for (const ev of [...new Set(list.filter(s => s.eventDate===k && s.event).map(s => s.event))]) cell.appendChild(el("span","ev",ev));
+      for (const grp of dueGroups(list, k)){
+        const c = el("span","dd"+(k<today?" past":""));
+        c.appendChild(el("b", null, grp.topic+": ")); c.appendChild(document.createTextNode(grp.names.join(", ")));
+        c.title = "Due: "+grp.topic+" ("+grp.names.join(", ")+")";
         cell.appendChild(c);
       }
       g.appendChild(cell);
@@ -165,29 +214,31 @@ function renderMonths(filter){
   }
 }
 
-function renderStories(filter){
+function renderStories(list){
   const box = document.getElementById("stories"); box.textContent = "";
-  const list = STORIES.filter(s => !filter || s.who.toLowerCase().includes(filter))
-    .sort((a,b) => (a.status==="published")-(b.status==="published") || (a.due||"9").localeCompare(b.due||"9"));
-  for (const s of list){
-    const c = document.createElement("article"); c.className = "story";
+  const sorted = [...list].sort((a,b) => (a.status==="published")-(b.status==="published") || (a.due||"9").localeCompare(b.due||"9"));
+  for (const s of sorted){
+    const c = el("article","story");
     const [label, cls] = STATUS[s.status] || ["",""];
-    const st = document.createElement("span"); st.className = "status "+cls; st.textContent = label; c.appendChild(st);
-    const h = document.createElement("h3"); h.className="who"; h.textContent = s.who + " ";
-    const yr = document.createElement("span"); yr.className="yr"; yr.textContent = s.yr; h.appendChild(yr); c.appendChild(h);
-    const w = document.createElement("p"); w.className="what"; w.textContent = s.story; c.appendChild(w);
-    const dl = document.createElement("dl");
-    const row = (a,b,cl) => { if(!b) return; const t=document.createElement("dt"); t.textContent=a; const v=document.createElement("dd"); v.textContent=b; if(cl) v.className=cl; dl.append(t,v); };
-    row("Set", nice(s.set)); row("Event", nice(s.event)); row("Due", s.dueText || nice(s.due), "due");
+    c.appendChild(el("span","status "+cls,label));
+    const h = el("h3","who",s.who+" "); h.appendChild(el("span","yr",s.yr)); c.appendChild(h);
+    c.appendChild(el("p","what",s.story));
+    const dl = el("dl");
+    const row = (a,b,cl) => { if(!b) return; dl.append(el("dt",null,a), el("dd",cl||null,b)); };
+    row("Set", nice(s.set)); row("Event", nice(s.eventDate)); row("Due", s.dueText || nice(s.due), "due");
     c.appendChild(dl);
-    const a = document.createElement("a");
+    const a = el("a");
     if (s.doc){ a.className="btn"; a.href=s.doc; a.target="_blank"; a.rel="noopener"; a.textContent = s.status==="published" ? "Read it" : "Open my doc"; }
     else { a.className="btn off"; a.textContent="Doc coming soon"; }
     c.appendChild(a); box.appendChild(c);
   }
 }
 
-function render(){ const f = document.getElementById("find").value.trim().toLowerCase(); renderMonths(f); renderStories(f); }
+function render(){
+  const f = document.getElementById("find").value.trim().toLowerCase();
+  const list = STORIES.filter(s => !f || s.who.toLowerCase().includes(f));
+  renderUpcoming(list); renderMonths(list); renderStories(list);
+}
 document.getElementById("find").addEventListener("input", render);
 render();
 </script>
