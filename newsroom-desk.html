@@ -29,6 +29,7 @@
     .month h2 { font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; margin: 2px 4px 10px; }
     .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
     .dow { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: center; padding-bottom: 2px; }
+    .month, .grid > * { min-width: 0; }
     .day { min-height: 64px; border-radius: 8px; padding: 4px; border: 1px solid transparent; font-size: .72rem; overflow: hidden; }
     .day.blank { visibility: hidden; }
     .day.weekend { opacity: .55; }
@@ -142,21 +143,16 @@ function renderMonths(filter){
       const dt = new Date(y,m,d), k = key(dt), cell = document.createElement("div");
       cell.className = "day" + (dt.getDay()%6===0 ? " weekend":"") + (k===today ? " today":"");
       const n = document.createElement("div"); n.className="n"; n.textContent=d; cell.appendChild(n);
-      let hits = 0, any = 0;
-      for (const s of STORIES){
-        for (const t of ["event","set","due"]){
-          if (s[t] !== k) continue;
-          if (t==="event" && s.event===s.set) continue;
-          any++;
-          const match = !filter || s.who.toLowerCase().includes(filter);
-          if (!match) continue;
-          hits++;
-          const c = document.createElement("span"); c.className = "chip "+t;
-          c.textContent = s.who; c.title = s.who+": "+s.story+" ("+({set:"story set",event:"event day",due:"due"})[t]+")";
-          cell.appendChild(c);
-        }
+      for (const t of ["event","set","due"]){
+        const names = [...new Set(STORIES.filter(s => s[t]===k && !(t==="event" && s.event===s.set))
+          .filter(s => !filter || s.who.toLowerCase().includes(filter)).map(s => s.who))];
+        if (!names.length) continue;
+        const word = {set:"set",event:"event",due:"due"}[t];
+        const c = document.createElement("span"); c.className = "chip "+t;
+        c.textContent = names.length===1 ? names[0] : names.length+" "+word;
+        c.title = ({set:"Story set",event:"Event day",due:"Due"})[t]+": "+names.join(", ");
+        cell.appendChild(c);
       }
-      if (filter && any && !hits) cell.classList.add("dim");
       g.appendChild(cell);
     }
     card.appendChild(g); box.appendChild(card);
