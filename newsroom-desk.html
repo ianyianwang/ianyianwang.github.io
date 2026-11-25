@@ -73,9 +73,12 @@
       .grid { gap: 2px; grid-template-columns: repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, .5fr)); }
       .dow { font-size: .6rem; letter-spacing: 0; padding: 0 2px; }
       .day { min-height: 48px; padding: 3px; font-size: .62rem; line-height: 1.25; }
-      .ev, .dd { padding: 1px 3px; overflow-wrap: anywhere; }
+      .ev, .dd { height: 6px; padding: 0; margin-top: 4px; border-radius: 3px; font-size: 0; overflow: hidden; }
+      .ev { background: var(--event); opacity: .5; }
       .up { grid-template-columns: 1fr; gap: 2px; }
+      .phone-hint { display: block; }
     }
+    .phone-hint { display: none; color: var(--muted); font-size: .85rem; margin: -6px 0 10px; }
   </style>
 </head>
 <body>
@@ -108,6 +111,7 @@
   <section class="upcoming" id="upcoming"></section>
 
   <h2 class="sec">Calendar</h2>
+  <p class="phone-hint">Orange bar = something is due. Grey bar = event day. Names are in <strong>Coming up</strong> above.</p>
   <section class="months" id="months"></section>
 
   <h2 class="sec">Your stories</h2>
