@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Reporter Desk · Mr. Ian Wang</title>
+  <meta name="description" content="Deadlines and story docs for our student reporters.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    :root { --set: #3b6fd8; --due: #e8792b; --event: #8a8f9c; --today: #fdeede; }
+    @media (prefers-color-scheme: dark) { :root { --set: #7da2f0; --event: #8f95a6; --today: #3a2a1d; } }
+    .desk-tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 6px 0 22px; }
+    .desk-tools input {
+      font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px;
+      background: var(--card); color: var(--ink); min-width: 220px; flex: 1 1 220px; max-width: 340px;
+    }
+    .key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .85rem; color: var(--muted); }
+    .key span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+    .key .k-set::before { background: var(--set); }
+    .key .k-due::before { background: var(--due); }
+    .key .k-event::before { background: var(--event); }
+
+    .months { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 30px; }
+    .month { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 14px; }
+    .month h2 { font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; margin: 2px 4px 10px; }
+    .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+    .dow { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: center; padding-bottom: 2px; }
+    .day { min-height: 64px; border-radius: 8px; padding: 4px; border: 1px solid transparent; font-size: .72rem; overflow: hidden; }
+    .day.blank { visibility: hidden; }
+    .day.weekend { opacity: .55; }
+    .day.today { background: var(--today); border-color: var(--due); }
+    .day .n { font-weight: 600; font-size: .8rem; color: var(--ink); }
+    .chip { display: block; margin-top: 2px; padding: 1px 5px; border-radius: 5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.45; }
+    .chip.set { background: var(--set); }
+    .chip.due { background: var(--due); }
+    .chip.event { background: var(--event); }
+    .day.dim .chip { opacity: .18; }
+
+    .stories { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+    .story { background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 16px 18px; }
+    .story .who { font-family: "Fraunces", Georgia, serif; font-size: 1.2rem; margin: 0; }
+    .story .yr { font-size: .8rem; color: var(--muted); }
+    .story .what { margin: 6px 0 10px; font-weight: 500; }
+    .story dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0 0 12px; font-size: .9rem; }
+    .story dt { color: var(--muted); }
+    .story dd { margin: 0; }
+    .story dd.due { color: var(--due); font-weight: 600; }
+    .status { display: inline-block; font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--ink); margin-bottom: 10px; }
+    .status.yours { background: var(--due); color: #fff; }
+    .status.done { background: #2f8f5b; color: #fff; }
+    .btn { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--navy); color: #fff; text-decoration: none; font-weight: 600; font-size: .9rem; }
+    .btn.off { background: var(--line); color: var(--muted); }
+    .hidden { display: none; }
+    .rules { margin-top: 28px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 420px) { .day { min-height: 54px; } .chip { font-size: .62rem; padding: 0 3px; } }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">Mr. Ian <span>Wang</span></a>
+    <nav>
+      <a href="./">Humanities</a>
+      <a href="around-school.html">Around School</a>
+      <a href="primary-newsroom.html">Primary Newsroom</a>
+      <a href="secondary-newsroom.html">Secondary Newsroom</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p class="eyebrow">For student reporters</p>
+    <h1>Reporter Desk</h1>
+    <p>Your stories, your deadlines and your Google Doc, all in one place. Find your name, check your due date, and click <strong>Open my doc</strong> to write.</p>
+  </section>
+
+  <div class="desk-tools">
+    <input id="find" type="search" placeholder="Type your nickname…" aria-label="Find your nickname">
+    <div class="key"><span class="k-set">Story set</span><span class="k-event">Event day</span><span class="k-due">Due</span></div>
+  </div>
+
+  <section class="months" id="months"></section>
+
+  <section class="stories" id="stories"></section>
+
+  <p class="rules"><strong>Remember:</strong> Primary 50–100 words, Secondary 100–200. Your own words only: no AI. When the status says <strong>Your turn</strong>, the next step is yours. Stuck? Email Mr. Wang.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="small">Mr. Ian Wang · Student Newsroom</p>
+  </div>
+</footer>
+
+<script>
+/* ===== UPDATE HERE =====
+   One line per story. Dates are YYYY-MM-DD (leave "" if not set).
+   status: "writing" | "yours" (student's turn) | "checking" (Mr Wang's turn) | "published"
+   doc: the Google Doc link ("" = not ready yet). */
+const STORIES = [
+  { who:"Thee",    yr:"Year 9", story:"U-15 basketball vs Anglo (opinion)", set:"2026-11-20", event:"2026-11-20", due:"2026-11-26", status:"yours",    doc:"https://docs.google.com/document/d/1N_N09IEikDha_EPBFu9CpjdSyaaOvmp5/edit" },
+  { who:"Mascot",  yr:"Year 9", story:"U-15 basketball vs Anglo",           set:"2026-11-20", event:"2026-11-20", due:"2026-11-23", status:"checking", doc:"https://docs.google.com/document/d/1PRswcN1ZH7rTCS5snnLUTIa17qvRBsN6/edit" },
+  { who:"Mascot",  yr:"Year 9", story:"U-15 BISAL South Conference tournament", set:"2026-11-24", event:"2026-11-28", due:"2026-11-30", status:"writing", doc:"" },
+  { who:"S",       yr:"Year 9", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/16QCf6ZuXwLniX9avibGuVO23hGf2Dr1n/edit" },
+  { who:"Ivy",     yr:"Year 9", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1KVKWAjY1dQ92k2_BFRGZhiLc0dPqcAia/edit" },
+  { who:"Proud",   yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1PbXgmcvig5kDRFfSUgv905gOfMfw0-s7/edit" },
+  { who:"Nam-Oon", yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1nVQxeeDexVKR1SLBSjqzQ4-QXWsruBQq/edit" },
+  { who:"Paula",   yr:"Year 8", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/1iyhKAqupfXr68xD5cRAaN1aV441eRrJC/edit" },
+  { who:"Oscar",   yr:"Year 5", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"writing",  doc:"https://docs.google.com/document/d/13ghzjR42HLL3XSpUmfEBMPfDSOBpFcil/edit" },
+  { who:"Pordee",  yr:"Year 6", story:"Loy Krathong celebration",           set:"2026-11-20", event:"2026-11-24", due:"2026-11-27", status:"published", doc:"primary-newsroom.html" },
+  { who:"Din",     yr:"Year 9", story:"Christmas show",                     set:"2026-11-20", event:"2026-12-09", due:"2026-12-11", status:"writing",  doc:"" },
+  { who:"O.B",     yr:"Year 9", story:"Christmas show",                     set:"2026-11-20", event:"2026-12-09", due:"2026-12-11", status:"writing",  doc:"" },
+  { who:"Kaleb",   yr:"Year 6", story:"U-11 / U-13 basketball: season opener (opinion)", set:"2026-11-24", event:"", due:"", dueText:"Before the first game (January)", status:"writing", doc:"" },
+];
+const MONTHS = [[2026,10],[2026,11]]; // November, December (month index starts at 0)
+/* ======================= */
+
+const STATUS = { writing:["Writing",""], yours:["Your turn","yours"], checking:["Mr. Wang is checking",""], published:["Published 🎉","done"] };
+const pad = n => String(n).padStart(2,"0");
+const key = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const nice = s => s ? new Date(s+"T00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}) : "";
+const today = key(new Date());
+
+function renderMonths(filter){
+  const box = document.getElementById("months"); box.textContent = "";
+  for (const [y,m] of MONTHS){
+    const card = document.createElement("div"); card.className = "month";
+    const h = document.createElement("h2");
+    h.textContent = new Date(y,m,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"}); card.appendChild(h);
+    const g = document.createElement("div"); g.className = "grid";
+    for (const d of ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]){ const e=document.createElement("div"); e.className="dow"; e.textContent=d; g.appendChild(e); }
+    const first = (new Date(y,m,1).getDay()+6)%7, days = new Date(y,m+1,0).getDate();
+    for (let i=0;i<first;i++){ const e=document.createElement("div"); e.className="day blank"; g.appendChild(e); }
+    for (let d=1; d<=days; d++){
+      const dt = new Date(y,m,d), k = key(dt), cell = document.createElement("div");
+      cell.className = "day" + (dt.getDay()%6===0 ? " weekend":"") + (k===today ? " today":"");
+      const n = document.createElement("div"); n.className="n"; n.textContent=d; cell.appendChild(n);
+      let hits = 0, any = 0;
+      for (const s of STORIES){
+        for (const t of ["event","set","due"]){
+          if (s[t] !== k) continue;
+          if (t==="event" && s.event===s.set) continue;
+          any++;
+          const match = !filter || s.who.toLowerCase().includes(filter);
+          if (!match) continue;
+          hits++;
+          const c = document.createElement("span"); c.className = "chip "+t;
+          c.textContent = s.who; c.title = s.who+": "+s.story+" ("+({set:"story set",event:"event day",due:"due"})[t]+")";
+          cell.appendChild(c);
+        }
+      }
+      if (filter && any && !hits) cell.classList.add("dim");
+      g.appendChild(cell);
+    }
+    card.appendChild(g); box.appendChild(card);
+  }
+}
+
+function renderStories(filter){
+  const box = document.getElementById("stories"); box.textContent = "";
+  const list = STORIES.filter(s => !filter || s.who.toLowerCase().includes(filter))
+    .sort((a,b) => (a.status==="published")-(b.status==="published") || (a.due||"9").localeCompare(b.due||"9"));
+  for (const s of list){
+    const c = document.createElement("article"); c.className = "story";
+    const [label, cls] = STATUS[s.status] || ["",""];
+    const st = document.createElement("span"); st.className = "status "+cls; st.textContent = label; c.appendChild(st);
+    const h = document.createElement("h3"); h.className="who"; h.textContent = s.who + " ";
+    const yr = document.createElement("span"); yr.className="yr"; yr.textContent = s.yr; h.appendChild(yr); c.appendChild(h);
+    const w = document.createElement("p"); w.className="what"; w.textContent = s.story; c.appendChild(w);
+    const dl = document.createElement("dl");
+    const row = (a,b,cl) => { if(!b) return; const t=document.createElement("dt"); t.textContent=a; const v=document.createElement("dd"); v.textContent=b; if(cl) v.className=cl; dl.append(t,v); };
+    row("Set", nice(s.set)); row("Event", nice(s.event)); row("Due", s.dueText || nice(s.due), "due");
+    c.appendChild(dl);
+    const a = document.createElement("a");
+    if (s.doc){ a.className="btn"; a.href=s.doc; a.target="_blank"; a.rel="noopener"; a.textContent = s.status==="published" ? "Read it" : "Open my doc"; }
+    else { a.className="btn off"; a.textContent="Doc coming soon"; }
+    c.appendChild(a); box.appendChild(c);
+  }
+}
+
+function render(){ const f = document.getElementById("find").value.trim().toLowerCase(); renderMonths(f); renderStories(f); }
+document.getElementById("find").addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
