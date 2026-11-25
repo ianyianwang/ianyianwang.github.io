@@ -57,7 +57,13 @@
     .btn.off { background: var(--line); color: var(--muted); }
     .hidden { display: none; }
     .rules { margin-top: 28px; color: var(--muted); font-size: .9rem; }
-    @media (max-width: 420px) { .day { min-height: 54px; } .chip { font-size: .62rem; padding: 0 3px; } }
+    @media (max-width: 520px) {
+      .month { padding: 10px 6px; }
+      .grid { gap: 2px; }
+      .dow { font-size: .6rem; letter-spacing: 0; }
+      .day { min-height: 44px; padding: 3px 2px; text-align: center; }
+      .chip { display: inline-block; width: 9px; height: 9px; padding: 0; margin: 2px 1px 0; border-radius: 50%; font-size: 0; }
+    }
   </style>
 </head>
 <body>
