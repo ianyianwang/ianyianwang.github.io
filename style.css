@@ -304,3 +304,15 @@ footer .small { font-size: .82rem; }
 @media (max-width: 760px) {
   .post.wide .split { grid-template-columns: 1fr; gap: 14px; }
 }
+
+/* Newsroom story (student article) */
+.post.story { grid-column: 1 / -1; }
+.post.story .body { padding: 22px 26px 26px; max-width: 760px; }
+.post.story h2 { font-size: 1.55rem; margin-bottom: 12px; }
+.byline { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+.byline img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+.byline strong { display: block; color: var(--ink); }
+.byline span { display: block; font-size: .85rem; color: var(--muted); }
+.post.story p { margin: 0 0 12px; line-height: 1.65; }
+.tag { display: inline-block; margin-left: 6px; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: .78rem; font-weight: 600; }
+@media (max-width: 520px) { .post.story .body { padding: 18px; } .post.story h2 { font-size: 1.3rem; } }
