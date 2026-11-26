@@ -11,6 +11,15 @@ my $src = <$in>; close $in;
 my ($stories) = $src =~ m{(<section class="posts">.*?</section>)}s
   or die "Could not find the posts section";
 
+# Parents' page only: show Pordee's Loy Krathong story above Oscar's (Ian, 26 Nov 2026).
+# Newer stories still sit above both, newest first.
+my $art = sub { my $id = shift; $stories =~ m{(<article class="post story" id="$id">.*?</article>\s*)}s ? $1 : undef };
+my ($oscar, $pordee) = ($art->('oscar-loy-krathong'), $art->('pordee-loy-krathong'));
+if ($oscar && $pordee) {
+  $stories =~ s/\Q$pordee\E//;
+  $stories =~ s/\Q$oscar\E/$pordee$oscar/;
+}
+
 my $page = <<"HTML";
 <!doctype html>
 <html lang="en">
